@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rigor.VehicleStore.dao.Owner_VehicleDao">
+
+	<resultMap id="vehicleMap" type="Vehicle">
+		<id column="vehicleid" property="vehicleID" />
+		<result column="type" property="type" />
+		<result column="brand" property="brand" />
+		<result column="model" property="model" />
+		<result column="colour" property="colour" />
+		<result column="year" property="year" />
+	</resultMap>
+
+	<resultMap id="ownerMap" type="Owner">
+		<id column="ownerid" property="ownerid" />
+		<result column="name" property="name" />
+		<!-- <association property='vehicles' resultMap='vehicleMap'/> -->
+		<collection property='vehicles' ofType='Vehicle' resultMap='vehicleMap' />
+	</resultMap>
+
+	<select id="getAllData" resultMap="ownerMap">
+		SELECT * FROM vehicledata vd
+		LEFT OUTER JOIN ownerdata od on vd.vehicleid = od.vehicleid;
+	</select>
+
+	<select id='getOwnerVehicles' parameterType='int' resultType='Vehicle'>
+		SELECT * FROM vehicledata vd
+		LEFT OUTER JOIN ownerdata od on vd.vehicleid = od.vehicleid WHERE od.ownerid = #{ownerid};
+	</select>
+
+	<select id='getVehicleOwner' parameterType='int' resultType='Owner'>
+		SELECT * FROM vehicledata vd
+		INNER JOIN ownerdata od on vd.vehicleid = od.vehicleid WHERE od.vehicleid = #{vehicleID};
+	</select>
+	
+	<select id='getDataById' parameterType='int' resultMap='ownerMap'>
+		SELECT * FROM vehicledata vd
+		INNER JOIN ownerdata od on vd.vehicleid = od.vehicleid WHERE od.vehicleid = #{vehicleID};
+	</select>
+
+</mapper>

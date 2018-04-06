@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rigor.VehicleStore.dao.VehicleDao">
+
+	<resultMap id="vehicleMap" type="Vehicle">
+		<id column="vehicleid" property="vehicleID" />
+		<result column="type" property="type" />
+		<result column="brand" property="brand" />
+		<result column="model" property="model" />
+		<result column="colour" property="colour" />
+		<result column="year" property="year" />
+		<result column="ownerdata_ownerid" property="ownerid" />
+	</resultMap>
+
+	<select id="getAllVehicles" resultMap="vehicleMap">
+		select * From vehicledata;
+	</select>
+	
+	<select id="getVehicleById" resultType="Vehicle" parameterType="int" resultMap="vehicleMap">
+	    SELECT * from vehicledata WHERE vehicleid = #{vehicleID}
+	</select>
+	
+	<insert id="createVehicle" parameterType="Vehicle"  keyProperty="id">
+	INSERT INTO `vehiclestore`.`vehicledata` (`vehicleid`, `type`, `brand`,
+	`model`, `colour`, `year`, `ownerdata_ownerid`) VALUES(#{vehicleID},
+	#{type}, #{brand}, #{model}, #{colour}, #{year}, #{ownerid});
+	</insert>
+	
+	<update id="updateVehicle" parameterType="Vehicle">
+		UPDATE `vehiclestore`.`vehicledata` SET `colour`=#{colour} WHERE `vehicleid`= #{vehicleID};
+	</update>
+	
+	<delete id="deleteVehicle" parameterType="int">
+		DELETE FROM vehicledata WHERE vehicleID = #{vehicleID}  	    
+	</delete>
+
+</mapper>
